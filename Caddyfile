@@ -4,8 +4,11 @@
     }
 }
 
-{$PANEL_DOMAIN} {
+{$PANEL_DOMAIN}:28445 {
     encode gzip zstd
+
+    # Используем готовые сертификаты от certbot (не ACME)
+    tls /etc/letsencrypt/live/{$PANEL_DOMAIN}/fullchain.pem /etc/letsencrypt/live/{$PANEL_DOMAIN}/privkey.pem
 
     reverse_proxy backend:3000 {
         transport http {

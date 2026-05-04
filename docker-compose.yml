@@ -37,21 +37,16 @@ services:
     networks:
       - hysteria-net
 
-  # Caddy - reverse proxy с автоматическим SSL
+  # Caddy - reverse proxy
   caddy:
     image: caddy:2-alpine
     container_name: hysteria-caddy
     restart: always
     ports:
-      - "80:80/tcp"
-      - "443:443/tcp"
+      - "28445:28445/tcp"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data
-      - caddy_config:/config
-    environment:
-      - PANEL_DOMAIN=${PANEL_DOMAIN}
-      - ACME_EMAIL=${ACME_EMAIL}
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     networks:
       - hysteria-net
     depends_on:
@@ -72,14 +67,12 @@ services:
     volumes:
       - ./logs:/app/logs
       - ./backups:/app/backups
-      - caddy_data:/caddy_data:ro
     env_file:
       - .env
     environment:
       MONGO_URI: mongodb://${MONGO_USER:-hysteria}:${MONGO_PASSWORD}@mongo:27017/hysteria?authSource=admin
       REDIS_URL: redis://redis:6379
       PORT: 3000
-      USE_CADDY: "true"
     networks:
       - hysteria-net
 
