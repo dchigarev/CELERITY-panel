@@ -194,6 +194,7 @@ router.put('/:id', requireScope('nodes:write'), async (req, res) => {
             'ignoreClientBandwidth', 'speedTest', 'disableUDP',
             'udpIdleTimeout', 'sniff', 'quic', 'resolver', 'acl',
             'aclRules', 'useTlsFiles', 'initScript',
+            'useCustomConfig', 'customConfig',
         ];
         
         const updates = {};
